@@ -1,0 +1,45 @@
+import { storage } from "@/firebase/server";
+import { NextRequest, NextResponse } from "next/server";
+
+export const POST = async (request: NextRequest) => {
+  try {
+    const formData = await request.formData();
+    const postId = formData.get('postId') as string;
+    const files = formData.getAll('images') as File[];
+    const bucket = storage.bucket();
+
+    const uploadedImagesPaths = await Promise.all(
+      files.map(async (file, index) => {
+        const arrayBuffer = await file.arrayBuffer();
+        const buffer = Buffer.from(arrayBuffer);
+
+        const destination = `posts/${postId}/${Date.now()}-${index}-${file.name}`;
+        const fileRef = bucket.file(destination);
+
+        await fileRef.save(buffer, {
+          metadata: {
+            contentType: file.type,
+          },
+        });
+
+        return destination;
+      })
+    );
+
+    return NextResponse.json(uploadedImagesPaths);
+  } catch (error: unknown) {
+    const message = 'Failed to upload files';
+    let details = '';
+
+    if (error instanceof Error) {
+      details = error.message;
+    } else {
+      details = String(error);
+    }
+
+    return NextResponse.json(
+      { error: message, details },
+      { status: 500 }
+    );
+  }
+}

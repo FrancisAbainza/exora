@@ -1,4 +1,13 @@
+# ![Alt text](assets/brand.svg)
+
+Exora is a website for sharing your skills, works, and other sharable things online. This website is made to demonstrate the integration of Firebase and Algolia with NextJS. Feel free to obtain the source code if you desire.
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+
+## Built With
+
+* [![Next][Next.js]][Next-url]
+* [![React][React.js]][React-url]
 
 ## Getting Started
 
@@ -34,3 +43,8 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+[Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
+[Next-url]: https://nextjs.org/
+[React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
+[React-url]: https://reactjs.org/
