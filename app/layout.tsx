@@ -28,10 +28,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.className} antialiased min-h-[100vh] flex flex-col`}
+        className={`${inter.className} antialiased h-screen flex flex-col`}
       >
         <AuthProvider>
-          <header className="bg-white p-6 md:px-12 ">
+          <header className="bg-white p-6 md:px-12 shadow-lg">
             <nav className="flex justify-between items-center max-w-[1024px] mx-auto">
               <Link href="/">
                 <Image
@@ -43,7 +43,7 @@ export default function RootLayout({
               <MenuButtons />
             </nav>
           </header>
-          <section className="px-6 py-12 w-full my-auto md:px-12">
+          <section className="flex-1 flex flex-col items-center justify-center gap-3 w-full px-6 py-12 md:px-12">
             {children}
           </section>
           <footer className="bg-[#27272A] text-white p-6 md:px-12">

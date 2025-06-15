@@ -3,14 +3,14 @@ import { useAuth } from "@/context/auth";
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
 
-export default function ContinueWithGoogleButton() {
+export default function ContinueWithGoogleButton({className = ""}) {
   const auth = useAuth();
   const router = useRouter()
 
   return (
     <Button
       variant="outline"
-      className="w-full"
+      className={`w-full ${className}`}
       onClick={async () => {
         try {
           await auth?.loginWithGoogle();

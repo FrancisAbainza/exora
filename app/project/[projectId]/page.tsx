@@ -11,7 +11,7 @@ export default async function Project({ params }: { params: Promise<{ projectId:
   const postData = await getPostById(paramsValue?.projectId);
 
   return (
-    <Card className="max-w-[554px] mx-auto">
+    <Card className="w-full max-w-[554px] mx-auto">
       <CardHeader>
         <Carousel className="w-full">
           <CarouselContent>
@@ -37,5 +37,6 @@ export default async function Project({ params }: { params: Promise<{ projectId:
         </Button>
       </CardFooter>
     </Card>
+
   );
 }

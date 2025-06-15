@@ -11,7 +11,7 @@ export default async function User({ params }: { params: Promise<{ userId: strin
   const userPosts = await getPostsByAuthorId(paramsValue.userId);
 
   return (
-    <section className="max-w-[1024px] mx-auto">
+    <div className="w-full max-w-[1024px] mx-auto">
       <Card>
         <CardContent className="flex flex-col items-center gap-3">
           <Avatar className="w-[100px] h-[100px]">
@@ -41,6 +41,6 @@ export default async function User({ params }: { params: Promise<{ userId: strin
           return <PostCard key={post.id} post={postData} />
         })}
       </div>
-    </section>
+    </div>
   );
 }
