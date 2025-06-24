@@ -26,7 +26,7 @@ export default async function User({ params }: { params: Promise<{ userId: strin
           )}
         </CardContent>
       </Card>
-      <div className="grid grid-cols-3 gap-3 mt-3">
+      <div className="grid grid-cols-1 gap-3 mt-3 sm:grid-cols-2 lg:grid-cols-3">
         {userPosts.map((post) => {
           const postData = {
             id: post.id,

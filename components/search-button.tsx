@@ -8,9 +8,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import OutlineBorder from "./outline-border"
 import { SearchIcon } from "lucide-react"
-import { liteClient as algoliasearch } from 'algoliasearch/lite';
 import {
-  InstantSearch,
   SearchBox,
   Hits,
   useInstantSearch,
@@ -19,6 +17,7 @@ import {
 import Image from "next/image";
 import { Avatar, AvatarFallback } from "./ui/avatar";
 import Link from "next/link";
+import AlgoliaSearch from "./algolia-search";
 
 type UserHit = {
   objectID: string;
@@ -27,8 +26,6 @@ type UserHit = {
   photoURL?: string;
   lastmodified: number;
 }
-
-const searchClient = algoliasearch(`${process.env.NEXT_PUBLIC_ALGOLIA_APP_ID}`, `${process.env.NEXT_PUBLIC_ALGOLIA_API_KEY}`);
 
 const BigSearchIcon = () => (
   <SearchIcon className="w-6 h-6" />
@@ -77,8 +74,7 @@ export default function SearchButton() {
         </OutlineBorder>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="flex flex-col gap-3 p-3 text-sm">
-        <InstantSearch
-          searchClient={searchClient}
+        <AlgoliaSearch
           indexName="users_index"
           insights
         >
@@ -96,8 +92,8 @@ export default function SearchButton() {
           />
 
           <HitsOnlyWhenQuery />
-        </InstantSearch>
-      </DropdownMenuContent>
-    </DropdownMenu>
+        </AlgoliaSearch>
+    </DropdownMenuContent>
+    </DropdownMenu >
   )
 }
