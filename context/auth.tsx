@@ -4,6 +4,7 @@ import { auth } from "@/firebase/client";
 import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup, User } from "firebase/auth";
 import { createContext, useContext, useEffect, useState } from "react"
 import { removeToken, saveUser, setToken } from "./actions";
+import { useRouter } from "next/navigation";
 
 type AuthContextType = {
   currentUser: User | null;
@@ -16,6 +17,7 @@ const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
@@ -38,6 +40,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       } else {
         await removeToken();
       }
+      router.refresh();
     });
 
     return () => unsubscribe();

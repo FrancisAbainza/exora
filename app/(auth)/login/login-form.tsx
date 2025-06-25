@@ -7,14 +7,12 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/auth";
 import { toast } from "sonner";
 import { FirebaseError } from "firebase/app";
 
 export default function LoginForm() {
   const auth = useAuth()
-  const router = useRouter();
   const form = useForm<z.infer<typeof loginUserSchema>>({
     resolver: zodResolver(loginUserSchema),
     defaultValues: {
@@ -30,7 +28,6 @@ export default function LoginForm() {
 
     try {
       await auth?.loginWithEmail(data.email, data.password);
-      router.refresh();
     } catch (error) {
       const firebaseError = error as FirebaseError;
       toast.error("Error!", {

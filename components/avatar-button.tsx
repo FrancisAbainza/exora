@@ -2,12 +2,10 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { Avatar, AvatarFallback } from "./ui/avatar";
 import Image from "next/image";
 import { useAuth } from "@/context/auth";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 export default function AvatarButton() {
   const auth = useAuth();
-  const router = useRouter();
 
   return (
     !!auth?.currentUser && (
@@ -40,7 +38,6 @@ export default function AvatarButton() {
           </DropdownMenuItem>
           <DropdownMenuItem className="cursor-pointer" onClick={async () => {
             await auth.logout();
-            router.refresh();
           }}>
             Logout
           </DropdownMenuItem>
