@@ -1,28 +1,36 @@
 import { useRef } from "react";
 import { Button } from "./ui/button";
 import Image from "next/image";
-import { XIcon } from "lucide-react";
+import { MoveIcon, XIcon } from "lucide-react";
+import {
+  DragDropContext,
+  Draggable,
+  Droppable,
+  DropResult,
+} from "@hello-pangea/dnd";
+import { Badge } from "./ui/badge";
 
 export type ImageUpload = {
   id: string;
   url: string;
-  file: File;
+  file?: File;
 };
 
 type Props = {
   onImagesChange: (images: ImageUpload[]) => void;
   images?: ImageUpload[];
+  urlFormatter: (image: ImageUpload) => string;
 }
 
 export default function MultiImageUploader({
   onImagesChange,
   images = [],
+  urlFormatter,
 }: Props) {
   const uploadInputRef = useRef<HTMLInputElement | null>(null);
-  
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || [])
-    
     const newImages = files.map((file, index) => {
       return {
         id: `${Date.now()}-${index}-${file.name}`,
@@ -34,6 +42,17 @@ export default function MultiImageUploader({
     onImagesChange([...images, ...newImages]);
   }
 
+  const handleDragEnd = (result: DropResult) => {
+    if (!result.destination) {
+      return;
+    }
+
+    const items = Array.from(images);
+    const [reorderedImage] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderedImage);
+    onImagesChange(items);
+  }
+
   const handleDelete = (id: string) => {
     // Reset the file input value so the user can upload the same file again
     if (uploadInputRef.current?.value) {
@@ -42,7 +61,7 @@ export default function MultiImageUploader({
 
     const updatedImages = images.filter((image) => image.id !== id);
     onImagesChange(updatedImages);
-  };
+  }
 
   return (
     <div className="flex flex-col gap-3">
@@ -62,22 +81,48 @@ export default function MultiImageUploader({
       >
         Upload images
       </Button>
-      {images.map((image) => (
-        <div key={image.id} className="flex items-center gap-6 border-1 rounded-md shadow-xs overflow-hidden pr-3">
-          <div className="relative size-16">
-            <Image
-              src={image.url}
-              alt=""
-              fill
-              className="object-cover"
-            />
-          </div>
-          <p className="flex-1">{image?.file?.name || image.id}</p>
-          <button onClick={() => { handleDelete(image.id) }}>
-            <XIcon className="text-destructive" />
-          </button>
-        </div>
-      ))}
+      <DragDropContext onDragEnd={handleDragEnd}>
+        <Droppable droppableId="property-images" direction="vertical">
+          {(provided) => (
+            <div {...provided.droppableProps} ref={provided.innerRef}>
+              {images.map((image, index) => (
+                <Draggable key={image.id} draggableId={image.id} index={index}>
+                  {(provided) => (
+                    <div
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                      ref={provided.innerRef}
+                      className="relative p-2"
+                    >
+                      <div key={image.id} className="flex items-center gap-6 border-1 rounded-md shadow-xs overflow-hidden pr-3">
+                        <div className="relative size-16">
+                          <Image
+                            src={urlFormatter(image)}
+                            alt=""
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
+                        <div className="flex-1">
+                          <p>{image?.file?.name || image.id}</p>
+                          {index === 0 && (
+                            <Badge variant={"outline"}>Featured Image</Badge>
+                          )}
+                        </div>
+                        <button onClick={() => { handleDelete(image.id) }}>
+                          <XIcon className="text-destructive" />
+                        </button>
+                        <MoveIcon className="text-gray-500" />
+                      </div>
+                    </div>
+                  )}
+                </Draggable>
+              ))}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
     </div>
   );
 }

@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import Image from "next/image";
 import { Badge } from "./ui/badge";
 import { Eye } from "lucide-react";
+import pathToFirebaseURL from "@/util/pathToFirebaseURL";
 
 type PostCardType = {
   id: string;
@@ -35,11 +36,17 @@ export default function PostCard({ post }: { post: PostCardType }) {
         <p>{caption}</p>
         <Badge variant="outline">{type}</Badge>
         <div className="relative w-full h-[200px] mt-auto">
-          <Image src={images[0]} alt={title} fill sizes="100%" priority className="object-cover" />
+          <Image src={pathToFirebaseURL(images[0])}
+            alt={title}
+            fill
+            sizes="100%"
+            priority
+            className="object-cover"
+          />
         </div>
       </CardContent>
       <CardFooter>
-        <Link href={`/project/${id}`} className="hover:bg-accent p-1 rounded-md" title="View Project">
+        <Link href={`/post/${id}`} className="hover:bg-accent p-1 rounded-md" title="View Project">
           <Eye />
         </Link>
       </CardFooter>

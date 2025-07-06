@@ -13,7 +13,7 @@ export const postImagesSchema = z.object({
     z.object({
       id: z.string(),
       url: z.string(),
-      file: z.instanceof(File),
+      file: z.instanceof(File).optional(),
     })
   ).min(1, "A minimum of one image is required"),
 });

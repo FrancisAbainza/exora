@@ -33,8 +33,22 @@ function Hit({ hit }: { hit: PostHit }) {
 }
 
 export default function Result() {
-  const { status } = useInstantSearch();
+  const { status, refresh } = useInstantSearch();
   const [showSkeleton, setShowSkeleton] = useState(false);
+
+  useEffect(() => {
+    // Refresh algolia hits when the flag is set to true
+    const shouldRefresh = localStorage.getItem('shouldRefreshPostHits') === 'true';
+
+    if (shouldRefresh) {
+      const timeout = setTimeout(() => {
+        refresh();
+        localStorage.setItem('shouldRefreshPostHits', 'false');
+      }, 1000);
+
+      return () => clearTimeout(timeout);
+    }
+  }, []);
 
   useEffect(() => {
     if (status === 'loading' || status === 'stalled') {

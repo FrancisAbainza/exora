@@ -61,13 +61,8 @@ export const savePostImages = async ({
     }
   };
 
-  // Create image url for each image path
-  const imageURLs = imagePaths.map((path) => (
-    `https://firebasestorage.googleapis.com/v0/b/exora-platform.firebasestorage.app/o/${encodeURIComponent(path)}?alt=media`
-  ));
-
   // Save images urls to the database
   await firestore.collection("posts").doc(postId).update({
-    images: imageURLs,
+    images: imagePaths,
   });
 }

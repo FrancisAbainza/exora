@@ -9,7 +9,7 @@ export type Post = {
   updated: FirebaseFirestore.Timestamp;
   description: string;
   images: string[];
-  link: string;
+  link?: string;
   title: string;
   type: string;
 }
