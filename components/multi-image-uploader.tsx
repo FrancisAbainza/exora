@@ -64,7 +64,7 @@ export default function MultiImageUploader({
   }
 
   return (
-    <div className="flex flex-col gap-3">
+    <div>
       <input
         className="hidden"
         ref={uploadInputRef}
@@ -92,9 +92,9 @@ export default function MultiImageUploader({
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
                       ref={provided.innerRef}
-                      className="relative p-2"
+                      className="relative"
                     >
-                      <div key={image.id} className="flex items-center gap-6 border-1 rounded-md shadow-xs overflow-hidden pr-3">
+                      <div key={image.id} className="flex items-center gap-3 border-1 rounded-md shadow-xs overflow-hidden mt-3 pr-3">
                         <div className="relative size-16">
                           <Image
                             src={urlFormatter(image)}
@@ -103,8 +103,8 @@ export default function MultiImageUploader({
                             className="object-cover"
                           />
                         </div>
-                        <div className="flex-1">
-                          <p>{image?.file?.name || image.id}</p>
+                        <div className="flex-1 overflow-hidden py-3">
+                          <p className="break-all">{image?.file?.name || image.id}</p>
                           {index === 0 && (
                             <Badge variant={"outline"}>Featured Image</Badge>
                           )}

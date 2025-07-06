@@ -2,7 +2,7 @@
 
 import { postSchema } from "@/validation/postSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@radix-ui/react-select";
+
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import MultiImageUploader, { ImageUpload } from "./multi-image-uploader";
@@ -11,6 +11,7 @@ import { FormField, FormItem, FormLabel, FormControl, FormMessage, Form } from "
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import pathToFirebaseURL from "@/util/pathToFirebaseURL";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 
 type Props = {
   handleSubmit: (data: z.infer<typeof postSchema>) => void;
@@ -93,7 +94,7 @@ export default function PostForm({
 
                 <Select
                   onValueChange={field.onChange}
-                  defaultValue={field.value}
+                  defaultValue="General"
                 >
                   <FormControl>
                     <SelectTrigger className="w-full">
