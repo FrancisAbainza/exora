@@ -7,7 +7,8 @@ import { createPost } from "./actions";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import PostForm from "@/components/post-form";
-import { savePostImages, uploadImages } from "../action";
+import { savePostImages } from "../action";
+import { uploadImages } from "@/actions/upload-images";
 
 export default function NewPostForm() {
   const auth = useAuth();
