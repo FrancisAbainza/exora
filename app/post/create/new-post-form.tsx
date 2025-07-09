@@ -3,11 +3,11 @@
 import { useAuth } from "@/context/auth";
 import { postSchema } from "@/validation/postSchema";
 import { z } from "zod";
-import { createPost, savePostImages } from "./actions";
+import { createPost } from "./actions";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import PostForm from "@/components/post-form";
-import { uploadImages } from "../action";
+import { savePostImages, uploadImages } from "../action";
 
 export default function NewPostForm() {
   const auth = useAuth();

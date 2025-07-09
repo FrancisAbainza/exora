@@ -1,66 +1,41 @@
-import { ImageUpload } from "@/components/multi-image-uploader";
+"use server";
 
-export const uploadImages = async (postId: string, images: ImageUpload[]) => {
-  // Create form data object
-  const formData = new FormData();
-  const paths: string[] = [];
+import { firestore } from "@/firebase/server";
+import { z } from "zod";
 
-  // Add post id to form data
-  formData.append('postId', postId);
-
-  // Add image files to form data
-  images.forEach((image) => {
-    if (image.file) {
-      formData.append('images', image.file);
-    }
+export const savePostImages = async ({
+  postId,
+  postImages,
+}: {
+  postId: string;
+  postImages: {
+    id: string,
+    name: string,
+    url: string,
+  }[]
+}) => {
+  // Check if data is of correct type
+  const schema = z.object({
+    postId: z.string(),
+    postImages: z.array(z.object({
+      id: z.string(),
+      url: z.string(),
+    })),
   });
 
-  // Fetch the upload route then send form data
-  const uploadResponse = await fetch('/api/upload', {
-    method: 'POST',
-    body: formData,
-  });
-
-  // If the status code is not with 200 - 299, retrun an error object
-  if (!uploadResponse.ok) {
-    const response = await uploadResponse.json();
+  const validation = schema.safeParse({ postId, postImages, });
+  if (!validation.success) {
     return {
       error: true,
-      message: response.error,
+      message: validation.error.issues[0].message || "An error has occured",
     }
-  }
+  };
 
-  // Combine old image paths with new image paths
-  const uploadedPaths: string[] = await uploadResponse.json();
-
-  // Return the respose of the fetch
-  return [...paths, ...uploadedPaths];
-}
-
-
-export const deleteImages = async (postId: string, images: ImageUpload[]) => {
-  // Create form data object
-  const formData = new FormData();
-
-  // Add post id to form data
-  formData.append('postId', postId);
-
-  // Add images url to form data
-  images.forEach((image) => {
-    formData.append('images', image.url);
-  });
-
-  // Fetch the delete route then send form data
-  const deleteResponse = await fetch('/api/delete', {
-    method: 'DELETE',
-    body: formData,
-  });
-
-  if (!deleteResponse.ok) {
-    const response = await deleteResponse.json();
-    return {
-      error: true,
-      message: response.error,
-    }
-  }
+  // Save images urls to the database
+  await firestore
+    .collection("posts")
+    .doc(postId)
+    .update({
+      images: postImages,
+    });
 }

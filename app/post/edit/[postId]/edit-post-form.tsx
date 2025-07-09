@@ -7,9 +7,10 @@ import { postSchema } from "@/validation/postSchema";
 import { z } from "zod";
 import { updatePost } from "./action";
 import { toast } from "sonner";
-import { deleteImages, uploadImages } from "../../action";
-import { savePostImages } from "../../create/actions";
+import { savePostImages } from "../../action";
 import { useRouter } from "next/navigation";
+import { deleteImages } from "@/actions/delete-images";
+import { uploadImages } from "@/actions/upload-images";
 
 export default function EditPostForm({
   id,
@@ -68,9 +69,9 @@ export default function EditPostForm({
     const imagePaths: string[] = []
     newImages.forEach((newImage, index) => {
       if (newImage.file) {
-        imagePaths.push(uploadResponse[index]) // new image paths
+        imagePaths.push(uploadResponse[index]) // new image path
       } else {
-        imagePaths.push(newImage.url); // old image paths
+        imagePaths.push(newImage.url); // old image path
       }
     });
 
