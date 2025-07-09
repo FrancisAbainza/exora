@@ -52,7 +52,7 @@ export default function Result() {
 
       return () => clearTimeout(timeout);
     }
-  }, []);
+  }, [refresh]);
 
   useEffect(() => {
     if (status === 'loading' || status === 'stalled') {

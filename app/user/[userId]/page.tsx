@@ -27,18 +27,18 @@ export default async function User({ params }: { params: Promise<{ userId: strin
         </CardContent>
       </Card>
       <div className="grid grid-cols-1 gap-3 mt-3 sm:grid-cols-2 lg:grid-cols-3">
-        {userPosts.map((post) => {
-          const postData = {
-            id: post.id,
-            title: post.title,
-            author: post.author,
-            authorId: post.authorId,
-            type: post.type,
-            caption: post.caption,
-            images: post.images,
+        {userPosts.map((userPost) => {
+          const post = {
+            id: userPost.id,
+            title: userPost.title,
+            author: userPost.author,
+            authorId: userPost.authorId,
+            type: userPost.type,
+            caption: userPost.caption,
+            imagePath: userPost.images[0].url,
           }
 
-          return <PostCard key={post.id} post={postData} />
+          return <PostCard key={post.id} post={post} />
         })}
       </div>
     </div>
