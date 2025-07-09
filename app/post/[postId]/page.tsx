@@ -1,3 +1,4 @@
+import PostSettings from "@/components/post-settings";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,36 +7,53 @@ import { getPostById } from "@/data/posts";
 import pathToFirebaseURL from "@/util/pathToFirebaseURL";
 import Image from "next/image";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 
 export default async function Project({ params }: { params: Promise<{ postId: string }> }) {
   const paramsValue = await params;
-  const postData = await getPostById(paramsValue?.postId);
+  const post = await getPostById(paramsValue?.postId);
+
+  if (!post) {
+    notFound();
+  }
 
   return (
     <Card className="w-full max-w-[554px] mx-auto">
       <CardHeader>
         <Carousel className="w-full">
           <CarouselContent>
-            {postData?.images.map((path: string, index: number) => (
+            {post?.images.map((image, index) => (
               <CarouselItem key={index} className="relative w-full h-[300px]">
-                <Image src={pathToFirebaseURL(path)} alt={`${postData.title} image`} fill priority className="object-cover" />
+                <Image
+                  src={pathToFirebaseURL(image.url)}
+                  alt={`${post.title} image`}
+                  fill
+                  priority
+                  sizes="100%"
+                  className="object-cover"
+                />
               </CarouselItem>
             ))}
           </CarouselContent>
           <CarouselPrevious className="left-0 border-0 bg-background" />
           <CarouselNext className="right-0 border-0 bg-background" />
         </Carousel>
-        <CardTitle className="mt-3">{postData?.title}</CardTitle>
-        <CardDescription>{postData?.author}</CardDescription>
+        <div className="flex justify-between items-center">
+          <div>
+            <CardTitle className="mt-3">{post?.title}</CardTitle>
+            <CardDescription>{post?.author}</CardDescription>
+          </div>
+          <PostSettings authorId={post.authorId} postId={post.id} />
+        </div>
       </CardHeader>
       <CardContent>
-        <p>{postData?.description}</p>
-        <Badge variant="outline">{postData?.type}</Badge>
+        <p>{post?.description}</p>
+        <Badge variant="outline">{post?.type}</Badge>
       </CardContent>
       <CardFooter>
         <Button asChild>
-          {postData?.link && (
-            <Link href={postData?.link} target="_blank">Go to resource</Link>
+          {post?.link && (
+            <Link href={post?.link} target="_blank">Go to resource</Link>
           )}
         </Button>
       </CardFooter>

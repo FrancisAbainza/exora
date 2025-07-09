@@ -5,6 +5,7 @@ import { decodeJwt } from "jose";
 function refreshAuthToken(token: string, request: NextRequest) {
   // We use decodeJwt() instead of auth.verifyIdToken() to prevent errors if token is expired.
   const decodedToken = decodeJwt(token);
+  console.log('refresh token');
 
   if (decodedToken.exp && (decodedToken.exp - 300) * 1000 < Date.now()) {
     return NextResponse.redirect(
@@ -29,7 +30,8 @@ export async function middleware(request: NextRequest) {
   if (!token && (
     request.nextUrl.pathname === "/" ||
     request.nextUrl.pathname.startsWith("/login") ||
-    request.nextUrl.pathname.startsWith("/register")
+    request.nextUrl.pathname.startsWith("/register") ||
+    request.nextUrl.pathname.startsWith("/post/edit")
   )) {
     return NextResponse.next();
   }
@@ -60,9 +62,8 @@ export const config = {
     "/login",
     "/register",
     "/home",
-    "/create-post",
     "/account",
-    "/project/:path*",
+    "/post/:path*",
     "/user/:path*",
   ],
 };

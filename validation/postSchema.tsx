@@ -12,6 +12,7 @@ export const postImagesSchema = z.object({
   images: z.array(
     z.object({
       id: z.string(),
+      name: z.string(),
       url: z.string(),
       file: z.instanceof(File).optional(),
     })

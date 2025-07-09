@@ -1,18 +1,5 @@
 import { firestore } from "@/firebase/server";
-
-export type Post = {
-  id: string;
-  author: string;
-  authorId: string;
-  caption: string;
-  created: FirebaseFirestore.Timestamp; 
-  updated: FirebaseFirestore.Timestamp;
-  description: string;
-  images: string[];
-  link?: string;
-  title: string;
-  type: string;
-}
+import { Post } from "@/types/post";
 
 export const getPostsByAuthorId = async (authorId: String) => {
   const docsSnapshot = await firestore
@@ -21,22 +8,27 @@ export const getPostsByAuthorId = async (authorId: String) => {
     .where("authorId", "==", authorId)
     .get();
 
-  const userPosts: Post[] = docsSnapshot.docs.map((doc) => (
+  const posts: Post[] = docsSnapshot.docs.map((doc) => (
     {
       id: doc.id,
-      ...doc.data() as Omit<Post, 'id'>,
-    }
+      ...doc.data(),
+    } as Post
   ));
-  
-  return userPosts;
+
+  return posts;
 }
 
 export const getPostById = async (id: string) => {
-  const post = await firestore.collection("posts").doc(id).get();
-   const userPost: Post =  {
-      id: post.id,
-      ...post.data() as Omit<Post, 'id'>,
-    }
+  const postSnapshot = await firestore.collection("posts").doc(id).get();
+  
+  if (!postSnapshot.data()) {
+    return null;
+  }
 
-  return userPost;
+  const postData = {
+    id: postSnapshot.id,
+    ...postSnapshot.data(),
+  } as Post;
+
+  return postData;
 }

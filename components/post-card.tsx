@@ -12,17 +12,17 @@ type PostCardType = {
   authorId: string;
   caption: string;
   type: string;
-  images: string[];
+  imagePath: string;
 }
 
 export default function PostCard({ post }: { post: PostCardType }) {
-  const { id, title, author, authorId, caption, type, images } = post;
+  const { id, title, author, authorId, caption, type, imagePath } = post;
 
   return (
     <Card className="h-full">
       <CardHeader>
         <CardTitle>
-          <Link href={`/project/${id}`} className="hover:underline">
+          <Link href={`/post/${id}`} className="hover:underline">
             {title}
           </Link>
         </CardTitle>
@@ -36,7 +36,7 @@ export default function PostCard({ post }: { post: PostCardType }) {
         <p>{caption}</p>
         <Badge variant="outline">{type}</Badge>
         <div className="relative w-full h-[200px] mt-auto">
-          <Image src={pathToFirebaseURL(images[0])}
+          <Image src={pathToFirebaseURL(imagePath)}
             alt={title}
             fill
             sizes="100%"

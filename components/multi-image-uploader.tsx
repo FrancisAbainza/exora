@@ -12,6 +12,7 @@ import { Badge } from "./ui/badge";
 
 export type ImageUpload = {
   id: string;
+  name: string
   url: string;
   file?: File;
 };
@@ -34,6 +35,7 @@ export default function MultiImageUploader({
     const newImages = files.map((file, index) => {
       return {
         id: `${Date.now()}-${index}-${file.name}`,
+        name: file.name,
         url: URL.createObjectURL(file),
         file,
       }
@@ -100,11 +102,12 @@ export default function MultiImageUploader({
                             src={urlFormatter(image)}
                             alt=""
                             fill
+                            sizes="100%"
                             className="object-cover"
                           />
                         </div>
                         <div className="flex-1 overflow-hidden py-3">
-                          <p className="break-all">{image?.file?.name || image.id}</p>
+                          <p className="break-all">{image.name}</p>
                           {index === 0 && (
                             <Badge variant={"outline"}>Featured Image</Badge>
                           )}

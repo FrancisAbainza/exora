@@ -12,7 +12,11 @@ type PostHit = {
   author: string;
   authorId: string;
   path: string;
-  images: string[];
+  images: {
+    id: string,
+    name: string,
+    url: string,
+  }[];
   lastmodified?: number;
 }
 
@@ -24,7 +28,7 @@ function Hit({ hit }: { hit: PostHit }) {
     authorId: hit.authorId,
     type: hit.type,
     caption: hit.caption,
-    images: hit.images,
+    imagePath: hit.images[0].url,
   }
 
   return (
@@ -44,7 +48,7 @@ export default function Result() {
       const timeout = setTimeout(() => {
         refresh();
         localStorage.setItem('shouldRefreshPostHits', 'false');
-      }, 1000);
+      }, 3000);
 
       return () => clearTimeout(timeout);
     }

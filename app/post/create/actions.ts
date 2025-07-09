@@ -1,4 +1,5 @@
 "use server"
+
 import { auth, firestore } from "@/firebase/server";
 import { postDataSchema } from "@/validation/postSchema";
 import { cookies } from "next/headers";
@@ -42,18 +43,25 @@ export const createPost = async (data: z.infer<typeof postDataSchema>) => {
 
 export const savePostImages = async ({
   postId,
-  imagePaths,
+  postImages,
 }: {
   postId: string;
-  imagePaths: string[];
+  postImages: {
+    id: string,
+    name: string,
+    url: string,
+  }[]
 }) => {
   // Check if data is of correct type
   const schema = z.object({
     postId: z.string(),
-    imagePaths: z.array(z.string()),
+    postImages: z.array(z.object({
+      id: z.string(),
+      url: z.string(),
+    })),
   });
 
-  const validation = schema.safeParse({ postId, imagePaths, });
+  const validation = schema.safeParse({ postId, postImages, });
   if (!validation.success) {
     return {
       error: true,
@@ -63,6 +71,6 @@ export const savePostImages = async ({
 
   // Save images urls to the database
   await firestore.collection("posts").doc(postId).update({
-    images: imagePaths,
+    images: postImages,
   });
 }

@@ -20,7 +20,7 @@ export default function MenuButtons() {
         <>
           <li>
             <OutlineBorder>
-              <Link href="/create-post" className="flex w-full h-full justify-center items-center">
+              <Link href="/post/create" className="flex w-full h-full justify-center items-center">
                 <Plus size={20} />
               </Link>
             </OutlineBorder>

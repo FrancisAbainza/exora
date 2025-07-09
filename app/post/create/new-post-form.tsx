@@ -7,40 +7,7 @@ import { createPost, savePostImages } from "./actions";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import PostForm from "@/components/post-form";
-import { ImageUpload } from "@/components/multi-image-uploader";
-
-const uploadImages = async (postId: string, images: ImageUpload[]) => {
-  // Create form data object
-  const formData = new FormData();
-
-  // Add post id to form data
-  formData.append('postId', postId);
-
-  // Add image files to form data
-  images.forEach((image) => {
-    if (image.file) {
-      formData.append('images', image.file);
-    }
-  });
-
-  // Fetch the upload route then send form data
-  const uploadResponse = await fetch('api/upload', {
-    method: 'POST',
-    body: formData,
-  });
-
-  // If the status code is not with 200 - 299, retrun an error object
-  if (!uploadResponse.ok) {
-    const response = await uploadResponse.json();
-    return {
-      error: true,
-      message: response.error,
-    }
-  }
-
-  // Return the respose of the fetch
-  return uploadResponse.json();
-}
+import { uploadImages } from "../action";
 
 export default function NewPostForm() {
   const auth = useAuth();
@@ -66,7 +33,7 @@ export default function NewPostForm() {
 
     // Upload images to storage
     const uploadResponse = await uploadImages(createPostResponse.postId, images);
-    if (!!uploadResponse.error) {
+    if ('error' in uploadResponse) {
       toast.error("Error!", {
         description: uploadResponse.message,
       });
@@ -74,10 +41,22 @@ export default function NewPostForm() {
     }
 
     // Save image paths to the database
-    const paths = uploadResponse;
-    await savePostImages(
-      { postId: createPostResponse.postId, imagePaths: paths }
+    const imagePaths = [...uploadResponse];
+    const postImages = imagePaths.map((imagePath, index) => ({
+      id: images[index].id,
+      name: images[index].name,
+      url: imagePath,
+    }));
+
+    const saveImageResponse = await savePostImages(
+      { postId: createPostResponse.postId, postImages }
     );
+    if (!!saveImageResponse?.error) {
+      toast.error("Error!", {
+        description: saveImageResponse.message,
+      });
+      return;
+    }
 
     // Display success toast then refresh
     toast.success("Success!", {
