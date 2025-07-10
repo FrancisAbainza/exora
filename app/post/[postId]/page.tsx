@@ -1,4 +1,4 @@
-import PostSettings from "@/components/post-settings";
+import SettingsDropdown from "@/app/post/[postId]/settings-dropdown";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -43,7 +43,7 @@ export default async function Project({ params }: { params: Promise<{ postId: st
             <CardTitle className="mt-3">{post?.title}</CardTitle>
             <CardDescription>{post?.author}</CardDescription>
           </div>
-          <PostSettings authorId={post.authorId} postId={post.id} />
+          <SettingsDropdown authorId={post.authorId} postId={post.id} />
         </div>
       </CardHeader>
       <CardContent>

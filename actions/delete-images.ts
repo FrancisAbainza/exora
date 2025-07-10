@@ -1,3 +1,5 @@
+"use client"
+
 import { ImageUpload } from "@/components/multi-image-uploader";
 
 export const deleteImages = async (postId: string, images: ImageUpload[]) => {
@@ -13,7 +15,7 @@ export const deleteImages = async (postId: string, images: ImageUpload[]) => {
   });
 
   // Fetch the delete route then send form data
-  const deleteResponse = await fetch('/api/delete', {
+  const deleteResponse = await fetch('/api/delete-images', {
     method: 'DELETE',
     body: formData,
   });

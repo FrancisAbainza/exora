@@ -94,7 +94,7 @@ export default function PostForm({
 
                 <Select
                   onValueChange={field.onChange}
-                  defaultValue="General"
+                  defaultValue={defaultValues?.type}
                 >
                   <FormControl>
                     <SelectTrigger className="w-full">

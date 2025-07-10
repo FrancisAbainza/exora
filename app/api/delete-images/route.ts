@@ -13,17 +13,8 @@ export async function DELETE(request: NextRequest) {
 
     return NextResponse.json({ message: 'Image deleted successfully' });
   } catch (error: unknown) {
-    const message = 'Failed to delete files';
-    let details = '';
-
-    if (error instanceof Error) {
-      details = error.message;
-    } else {
-      details = String(error);
-    }
-
     return NextResponse.json(
-      { error: message, details },
+      { error: 'Failed to delete files' },
       { status: 500 }
     );
   }

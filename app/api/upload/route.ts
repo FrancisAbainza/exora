@@ -28,17 +28,8 @@ export const POST = async (request: NextRequest) => {
 
     return NextResponse.json(uploadedImagesPaths);
   } catch (error: unknown) {
-    const message = 'Failed to upload files';
-    let details = '';
-
-    if (error instanceof Error) {
-      details = error.message;
-    } else {
-      details = String(error);
-    }
-
     return NextResponse.json(
-      { error: message, details },
+      { error: 'Failed to upload files' },
       { status: 500 }
     );
   }

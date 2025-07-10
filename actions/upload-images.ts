@@ -1,3 +1,5 @@
+"use client"
+
 import { ImageUpload } from "@/components/multi-image-uploader";
 
 export const uploadImages = async (postId: string, images: ImageUpload[]) => {
