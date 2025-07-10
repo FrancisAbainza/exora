@@ -25,9 +25,12 @@ export async function DELETE(request: NextRequest) {
       message: `Deleted ${files.length} file(s) in "${folderPath}"`,
     });
   } catch (error: unknown) {
-    return NextResponse.json(
-      { error: 'Failed to delete files' },
-      { status: 500 }
-    );
+    if (error instanceof Error) {
+      return NextResponse.json(
+        { error: error.message || 'Failed to delete files' },
+        { status: 500 }
+      );
+    }
+
   }
 }
