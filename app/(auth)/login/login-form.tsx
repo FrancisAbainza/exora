@@ -28,13 +28,18 @@ export default function LoginForm() {
 
     try {
       await auth?.loginWithEmail(data.email, data.password);
-    } catch (error) {
-      const firebaseError = error as FirebaseError;
-      toast.error("Error!", {
-        description: firebaseError.code === "auth/invalid-credential"
-          ? "Incorrect credentials"
-          : "An error occurred",
-      });
+    } catch (error: unknown) {
+      if (error instanceof FirebaseError) {
+        toast.error("Error!", {
+          description: error.code === "auth/invalid-credential"
+            ? "Incorrect credentials"
+            : "An error occurred",
+        });
+      } else {
+        toast.error("Error!", {
+          description: error instanceof Error ? error.message : "An error occurred",
+        });
+      }
     }
   }
 

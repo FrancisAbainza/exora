@@ -9,11 +9,9 @@ export const deletePost = async (postId: string) => {
       .doc(postId)
       .delete();
   } catch (error: unknown) {
-    if (error instanceof Error) {
-      return {
-        error: true,
-        message: error.message
-      };
-    }
+    return {
+      error: true,
+      message:  error instanceof Error ? error.message : 'Failed to delete files',
+    };
   }
 }

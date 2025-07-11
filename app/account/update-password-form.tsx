@@ -61,7 +61,6 @@ export default function UpdatePasswordForm() {
       // Clear form
       form.reset();
     } catch (error) {
-      // Show error toast
       if (error instanceof FirebaseError) {
         toast.error("Error!", {
           description: error.code === "auth/invalid-credential"
@@ -70,7 +69,7 @@ export default function UpdatePasswordForm() {
         });
       } else {
         toast.error("Error!", {
-          description: "An error occurred",
+          description: error instanceof Error ? error.message : "An error occurred",
         });
       }
     }

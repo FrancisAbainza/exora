@@ -28,11 +28,9 @@ export const POST = async (request: NextRequest) => {
 
     return NextResponse.json(uploadedImagesPaths);
   } catch (error: unknown) {
-    if (error instanceof Error) {
-      return NextResponse.json(
-        { error: error.message || 'Failed to upload files' },
-        { status: 500 }
-      );
-    }
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : 'Failed to upload files' },
+      { status: 500 }
+    );
   }
 }

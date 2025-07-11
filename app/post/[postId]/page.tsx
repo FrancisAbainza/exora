@@ -58,6 +58,5 @@ export default async function Project({ params }: { params: Promise<{ postId: st
         </Button>
       </CardFooter>
     </Card>
-
   );
 }

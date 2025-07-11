@@ -52,7 +52,7 @@ export default function DeleteAccount({ isPasswordProvider }: { isPasswordProvid
           });
         } else {
           toast.error("Error!", {
-            description: "An error occurred",
+            description: error instanceof Error ? error.message : "An error occurred",
           });
         }
       }
